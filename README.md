@@ -1,5 +1,5 @@
 # Question Bank App
-This is a simple quiz questions bank application developed using Flask, a Python web framework. The application allows users to create and manage quiz questions, add categories, and play quizzes based on different categories and the number of questions. The application stores quiz data in a SQLite database.
+This is a simple quiz questions bank application developed using Flask, a Python web framework. The application allows users to create and manage quiz questions, add categories, and play quizzes based on different categories and the number of questions. 
 
 ## Setup
 
