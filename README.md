@@ -1,6 +1,37 @@
 # Question Bank App
 This is a simple quiz questions bank application developed using Flask, a Python web framework. The application allows users to create and manage quiz questions, add categories, and play quizzes based on different categories and the number of questions. The application stores quiz data in a SQLite database.
 
+## Setup
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/jojogmattam/Pyhton_Flask_MiniProject.git
+    cd Pyhton_Flask_MiniProject
+    ```
+
+2. **Run the application:**
+
+    ```bash
+    python3 alta3research-flask01.py
+    ```
+
+   The application will be accessible at [http://localhost:5000](http://localhost:5000).
+
+## Usage
+
+1. Access the landing page at [http://localhost:5000](http://localhost:5000).
+
+2. Use the navigation links to add new questions, add categories, generate API URLs, delete questions, and play quizzes.
+
+## Database
+
+The application uses SQLite to store quiz questions and categories. Two tables are created:
+
+- `question_bank`: Stores quiz questions with columns for ID, category, question, correct answer, and incorrect answers.
+
+- `category`: Stores categories for quiz questions.
+
 ## API Endpoints
 
 ### 1. Get Quiz Questions
@@ -47,38 +78,6 @@ This is a simple quiz questions bank application developed using Flask, a Python
   - `category` (optional): Filter questions by category.
   - `count` (optional): Limit the number of questions returned.
 - **Response:** Displays a generated API URL based on the specified parameters.
-
-
-## Setup
-
-1. **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/jojogmattam/Pyhton_Flask_MiniProject.git
-    cd Pyhton_Flask_MiniProject
-    ```
-
-2. **Run the application:**
-
-    ```bash
-    python3 alta3research-flask01.py
-    ```
-
-   The application will be accessible at [http://localhost:5000](http://localhost:5000).
-
-## Usage
-
-1. Access the landing page at [http://localhost:5000](http://localhost:5000).
-
-2. Use the navigation links to add new questions, add categories, generate API URLs, delete questions, and play quizzes.
-
-## Database
-
-The application uses SQLite to store quiz questions and categories. Two tables are created:
-
-- `question_bank`: Stores quiz questions with columns for ID, category, question, correct answer, and incorrect answers.
-
-- `category`: Stores categories for quiz questions.
 
 ## Notes
 
