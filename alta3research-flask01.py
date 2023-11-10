@@ -25,6 +25,56 @@ def index():
 def new_question():
     return render_template('new_question.html', categories=get_categories())
 
+@app.route('/add_question', methods=['POST'])
+def add_question():
+    try:
+        category = request.form['category']
+        question = request.form['question']
+        correct_answer = request.form['correct_answer']
+        incorrect_answers = request.form.getlist('incorrect_answers')
+        incorrect_answers_str = ",".join(incorrect_answers)
+        with sqlite3.connect('database.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO question_bank (category, question, correct_answer, incorrect_answers) VALUES (?, ?, ?, ?)", (category, question, correct_answer, incorrect_answers_str))
+            conn.commit()
+        
+        msg = "Record successfully added"
+
+    except Exception as e:
+        conn.rollback()
+        msg = "Error in insert operation"
+
+    finally:
+        return render_template('result.html', msg= msg)
+
+#Delete question from question bank based on id
+@app.route('/delete_question', methods=['GET'])
+def delete_question_form():
+    return render_template('delete_question.html')
+
+@app.route('/delete_question_from_db', methods=['POST', 'DELETE'])
+def delete_question_from_db():
+    id = request.form.get('id') 
+    try:
+        with sqlite3.connect('database.db') as conn:
+            cursor = conn.cursor()
+            #check if question with id exists in question bank
+            cursor.execute("SELECT * FROM question_bank WHERE id = ?", (id,))
+            row = cursor.fetchone()
+            if not row:
+                return render_template('result.html', msg="Question ID: " + id + "  does not exist")
+            else :
+                #delete question from question bank
+                cursor.execute("DELETE FROM question_bank WHERE id = ?", (id,))
+                conn.commit()
+                msg = "Question successfully deleted"
+                return render_template('result.html', msg=msg)
+
+    except Exception as e:
+        conn.rollback()
+        msg = "Error in delete operation"
+        return render_template('result.html', msg=msg)
+
 #Add category to question bank
 @app.route('/new_category')
 def new_category():
@@ -48,29 +98,34 @@ def add_category():
     finally:
         return render_template('result.html', msg= msg)
 
-@app.route('/add_question', methods=['POST'])
-def add_question():
+#Pull categories from question bank
+def get_categories():
+    categories = []
     try:
-        category = request.form['category']
-        question = request.form['question']
-        correct_answer = request.form['correct_answer']
-        incorrect_answers = request.form.getlist('incorrect_answers')
-        incorrect_answers_str = ",".join(incorrect_answers)
         with sqlite3.connect('database.db') as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO question_bank (category, question, correct_answer, incorrect_answers) VALUES (?, ?, ?, ?)", (category, question, correct_answer, incorrect_answers_str))
-            conn.commit()
-        
-        msg = "Record successfully added"
-
+            cursor.execute("SELECT category FROM category")
+            categories = cursor.fetchall()
+            categories = [category[0] for category in categories]
+            return categories
+    
     except Exception as e:
         conn.rollback()
-        msg = "Error in insert operation"
+        msg = "Error in select operation"
+        return render_template('result.html', msg=msg)
 
-    finally:
-        return render_template('result.html', msg= msg)
 
-#set route for my api
+#Return all questions in question bank
+@app.route('/question_bank', methods=['GET'])
+def question_bank():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM question_bank")
+    rows = cursor.fetchall()
+    return render_template("list.html",rows = rows) 
+
+#Set route for my api
 @app.route('/api/quiz', methods=['GET'])
 def quiz():
     # Get parameters from the request
@@ -104,16 +159,7 @@ def quiz():
 
     return json.dumps(results, sort_keys=False)
 
-#Return all questions in question bank
-@app.route('/question_bank', methods=['GET'])
-def question_bank():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM question_bank")
-    rows = cursor.fetchall()
-    return render_template("list.html",rows = rows) 
-
+#Generate API Page
 @app.route('/api_generate')
 def api_generate():
     return render_template('generate_api.html', categories=get_categories())
@@ -137,65 +183,37 @@ def generate_url():
 
     return render_template('generate_api.html', generated_url=generated_url)
 
-#delete question from question bank based on id
-@app.route('/delete_question', methods=['GET'])
-def delete_question_form():
-    return render_template('delete_question.html')
+#Quiz Game
 
+def ask_params():
+    global count
+    no_qsts = int(request.form['num_questions'])
+    count = no_qsts
+    category = request.form['category']
 
-@app.route('/delete_question_from_db', methods=['POST', 'DELETE'])
-def delete_question_from_db():
-    id = request.form.get('id') 
-    try:
-        with sqlite3.connect('database.db') as conn:
-            cursor = conn.cursor()
-            #check if question with id exists in question bank
-            cursor.execute("SELECT * FROM question_bank WHERE id = ?", (id,))
-            row = cursor.fetchone()
-            if not row:
-                return render_template('result.html', msg="Question ID: " + id + "  does not exist")
-            else :
-                #delete question from question bank
-                cursor.execute("DELETE FROM question_bank WHERE id = ?", (id,))
-                conn.commit()
-                msg = "Question successfully deleted"
-                return render_template('result.html', msg=msg)
+    params = {
+        "count": no_qsts,
+        "category": category,
+    }
+    return params
 
-    except Exception as e:
-        conn.rollback()
-        msg = "Error in delete operation"
-        return render_template('result.html', msg=msg)
+def build_url(base_url, params):
+    url = requests.get(base_url, params=params)
+    return url.url
 
-def get_categories():
-    categories = []
-    try:
-        with sqlite3.connect('database.db') as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT category FROM category")
-            categories = cursor.fetchall()
-            categories = [category[0] for category in categories]
-            return categories
-    
-    except Exception as e:
-        conn.rollback()
-        msg = "Error in select operation"
-        return render_template('result.html', msg=msg)
-
-
-#Quiz Game Routes
-
+#Game Index Page
 @app.route('/game_index')
 def game_index():
     session.clear()
     return render_template('game_index.html', categories=get_categories())
 
+#Start with the game page.
 @app.route('/game_start', methods=['POST'])
 def start_game():
     params = ask_params()
     url = build_url(base_url, params)
     session['url'] = url  # Set the 'url' in the session
     return redirect(url_for('game'))
-
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
@@ -211,8 +229,6 @@ def game():
 
     if request.method == 'POST':
         selected_answer = request.form.get('selected_answer')
-        # print(f"Selected Answer: {selected_answer}")
-        # print(f"Correct Answer: {correct_answer}")
 
         if selected_answer == correct_answer:
             session['score'] = session.get('score', 0) + 1
@@ -236,7 +252,7 @@ def game():
         session.pop('current_question', None)  
         return render_template('game_over.html', score=session.get('score', 0), total_questions=total_questions)
 
-
+#Route for play again
 @app.route('/play_again', methods=['GET'])
 def play_again():
     session.clear()
@@ -244,28 +260,11 @@ def play_again():
     count = 0  
     return redirect(url_for('game_index'))
 
+#Route for game over
 @app.route('/game_over')
 def game_over():
     score = session.get('score', 0)
     return render_template('game_over.html', score=score)
-
-def ask_params():
-    global count
-    no_qsts = int(request.form['num_questions'])
-    count = no_qsts
-    category = request.form['category']
-
-    params = {
-        "count": no_qsts,
-        "category": category,
-    }
-    return params
-
-def build_url(base_url, params):
-    url = requests.get(base_url, params=params)
-    return url.url
-
-
 
 if __name__ == '__main__':
     try:
