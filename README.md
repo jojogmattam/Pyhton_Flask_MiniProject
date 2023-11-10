@@ -55,7 +55,7 @@ This is a simple quiz application developed using Flask, a Python web framework.
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/quiz-app.git
+    git clone https://github.com/jojogmattam/Pyhton_Flask_MiniProject.git
     cd quiz-app
     ```
 
