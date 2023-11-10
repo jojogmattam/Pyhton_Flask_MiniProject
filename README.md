@@ -55,7 +55,7 @@ This is a simple quiz questions bank application developed using Flask, a Python
 
     ```bash
     git clone https://github.com/jojogmattam/Pyhton_Flask_MiniProject.git
-    cd quiz-app
+    cd Pyhton_Flask_MiniProject
     ```
 
 2. **Run the application:**
