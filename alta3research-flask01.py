@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 import requests
 import random
 import os
+import json
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -101,7 +102,7 @@ def quiz():
     # Convert the rows to a list of dictionaries for JSON response
     results = [{'id': row['id'], 'category': row['category'], 'question': row['question'], 'correct_answer': row['correct_answer'], 'incorrect_answers': row['incorrect_answers'].split(',')} for row in rows]
 
-    return jsonify(results)
+    return json.dumps(results, sort_keys=False)
 
 #Return all questions in question bank
 @app.route('/question_bank', methods=['GET'])
