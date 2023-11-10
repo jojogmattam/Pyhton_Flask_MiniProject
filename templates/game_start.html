@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Trivia Game</title>
+</head>
+
+<body>
+    <header>
+        <h1>Quiz Game</h1>
+        <a href="/" class="home-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2L0 12h3v10h18v-10h3"></path>
+            </svg>
+        </a>
+    </header>
+    <form action="/game" method="POST">
+        <h2>Question {{ current_question }} / {{ total_questions }}</h2>
+        <p>{{ question }}</p>
+        <ul>
+            {% for answer in answers %}
+                <li>
+                    <label>
+                        <input type="radio" name="selected_answer" value="{{ answer }}"> {{ answer }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <button type="submit">Submit Answer</button>
+    </form>
+</body>
+
+</html>

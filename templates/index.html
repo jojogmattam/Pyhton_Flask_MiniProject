@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Welcome to my Question Bank</title>
+</head>
+<body>
+    <header id="main_page_heading">
+        <h1>Question Bank</h1>
+    </header>
+    <nav>
+        <div class="dropdown">
+            <a id="main_page" href="#">Database Operations</a>
+            <div class="dropdown-content">
+                <a id="main_page" href="/new_question">Add Question</a>
+                <a id="main_page" href="/delete_question">Delete Question</a>
+                <a id="main_page" href="/new_category">Add Category</a>
+            </div>
+        </div>
+        <a id="main_page" href="/question_bank">View Records</a>
+        <a id="main_page" href="/api_generate">API URL Generator</a>
+        <a id="main_page" href="/game_index">Start Quiz</a>
+    </nav>
+</body>
+</html>

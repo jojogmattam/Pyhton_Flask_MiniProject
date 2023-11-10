@@ -1,0 +1,159 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+header {
+    background-color: #0e3b0d;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#main_page_heading {
+    display: block;
+}
+
+nav {
+    text-align: center;
+    margin: 20px;
+}
+
+.home-icon {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    cursor: pointer;
+}
+
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+    text-align: left;
+}
+
+select, textarea, input[type="text"] {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #0e3b0d;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #0e3b0d;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #065b04;
+    color: #fff;
+}
+
+h2, p {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#main_page {
+    text-decoration: none;
+    color: #0e3b0d;
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+#copy-button {
+    width: 40%;
+}
+
+#play_again_button {
+    width: 150px;
+}

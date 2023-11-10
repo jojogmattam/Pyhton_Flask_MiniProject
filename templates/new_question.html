@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Add Question</title>
+</head>
+<body>
+   <header>
+      <h1>Add Question to the Database</h1>
+      <a href="/" class="home-icon">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+             <path d="M12 2L0 12h3v10h18v-10h3"></path>
+         </svg>
+     </a>
+  </header>
+    <form action="{{ url_for('add_question') }}" method="POST" onsubmit="return validateForm()">
+        <h2>Fill in the details</h2>
+        <label for="category">Choose a Category:</label>
+        <select name="category" required>
+         <option value="" disabled selected>Select a Category</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select><br />
+
+        <label for="question">Question:</label>
+        <textarea name="question" placeholder="Enter the question here" required></textarea><br />
+
+        <label for="correct_answer">Correct Answer:</label>
+        <input type="text" name="correct_answer" placeholder="Enter the correct answer here" required/><br />
+
+        <label for="incorrect_answers">Incorrect Answers:</label>
+        <input type="text" name="incorrect_answers" placeholder="Comma sepeated. eg: Red, Blue, Yellow" required/><br />
+        <input type="submit" value="Submit" /><br />
+    </form>
+    <script>
+      function validateForm() {
+          var inputValue = document.getElementsByName("incorrect_answers")[0].value;
+          var commaRegex = /.*,.*,.*/;
+
+          if (!commaRegex.test(inputValue)) {
+              alert("Please enter at least three incorrect answers seperated by commas.");
+              return false;
+          }
+
+          return true;
+      }
+  </script>
+</body>
+</html>
